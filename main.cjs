@@ -12,6 +12,7 @@ let appSettings = {
   showWisdom: true,
   showLotus: true,
   showStacking: true,
+  playAudio: true,
   location: 'top-right'
 };
 
@@ -79,6 +80,8 @@ function createTray() {
     { label: 'Show Healing Lotus', type: 'checkbox', checked: appSettings.showLotus, click: (i) => { appSettings.showLotus = i.checked; sendSettings(); } },
     { label: 'Show Camp Stacking', type: 'checkbox', checked: appSettings.showStacking, click: (i) => { appSettings.showStacking = i.checked; sendSettings(); } },
     { type: 'separator' },
+    { label: 'Play Sound Alerts', type: 'checkbox', checked: appSettings.playAudio, click: (i) => { appSettings.playAudio = i.checked; sendSettings(); } },
+    { type: 'separator' },
     {
       label: 'Location',
       submenu: [
@@ -127,6 +130,9 @@ const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) {
   app.quit();
 } else {
+  // Allow audio playback without user gesture
+  app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
+
   app.on('second-instance', (event, commandLine, workingDirectory) => {
     dialog.showErrorBox('Already Running', 'Dota Timekeeper is already running. Please check your system tray.');
     if (mainWindow) {

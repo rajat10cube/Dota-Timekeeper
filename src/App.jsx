@@ -16,6 +16,7 @@ function App() {
     showWisdom: true,
     showLotus: true,
     showStacking: true,
+    playAudio: true,
     location: 'top-right'
   });
 
@@ -93,7 +94,9 @@ function App() {
   const checkBeep = (name, timeVal) => {
     const key = `${name}-${timeVal}`;
     if (!beepTracking.current[key]) {
-      playChime();
+      if (settingsRef.current.playAudio) {
+        playChime();
+      }
       beepTracking.current[key] = true;
     }
   };
